@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>一个小网站</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      text-align: center;
+    }
+
+    .media-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 20px auto;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    video, img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .start-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: black; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      z-index: 10;
+      visibility: visible;
+    }
+
+    .start-screen h1 {
+      margin-bottom: 20px;
+    }
+
+    .start-screen p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .start-button {
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: white;
+      color: black; 
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .start-button:hover {
+      background-color: #eee;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    h1 {
+      color: #FF6347;
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .button {
+      padding: 10px 20px;
+      background-color: #FF6347;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .button:hover {
+      background-color: #FF4500;
+    }
+
+    audio {
+      margin-top: 20px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 开始界面，放置视频和说明文字 -->
+  <div class="start-screen" id="startScreen">
+    <h1>哈哈哈，被耍了吧，问卷在视频结尾的链接里，所以一定要看完这个哦！ </h1>
+    <p>你小子别给我快进，视频里面有惊喜，错过了就真的很可惜了！</p>
+    <div class="media-container">
+      <video id="introVideo" preload="auto" autoplay>
+        <source src="assets/intro_video.mp4" type="video/mp4">
+        您的浏览器不支持视频播放。
+      </video>
+    </div>
+    <button class="start-button" onclick="startExperience()">GO GO GO!</button>
+  </div>
+
+  <!-- 祝福内容 -->
+  <div class="container" id="mainContent" style="display: none;">
+    <h1>今天是2024届6班团支书周佶劼同学的生日，让我们祝他生日快乐！！！</h1>
+    <div class="media-container">
+      <img src="assets/photo1.png" alt="Happy Birthday Photo" id="birthdayImage" />
+    </div>
+    <button class="button" onclick="changeImage()">往事总在回忆中被赋予意义，点开来回忆一下吧</button>
+    <p id="message">2024元旦大家一起吃自己包的饺子！！！</p>
+    <audio id="bgm" loop>
+      <source src="assets/happy_birthday.mp3" type="audio/mp3" />
+      您的浏览器不支持音频元素。
+    </audio>
+  </div>
+
+  <script>
+    // 播放视频完毕后跳转
+    const introVideo = document.getElementById('introVideo');
+    const mainContent = document.getElementById('mainContent');
+    const startScreen = document.getElementById('startScreen');
+    const startButton = document.querySelector('.start-button');
+    const bgm = document.getElementById('bgm');
+
+    // 控制视频播放
+    function startExperience() {
+      introVideo.play();
+      startButton.style.display = 'none'; // 隐藏按钮
+    }
+
+    introVideo.onended = function () {
+      // 隐藏视频并显示祝福内容
+      startScreen.style.display = 'none';
+      mainContent.style.display = 'block';
+
+      // 播放背景音乐
+      bgm.play().catch(() => {
+        alert('浏览器限制了自动播放，请点击页面后重试 🎵');
+      });
+    };
+
+    let currentImageIndex = 0;
+    const images = [
+      'assets/photo1.png',
+      'assets/photo2.jpg',
+      'assets/photo3.jpg',
+      'assets/photo4.jpg',
+      'assets/photo5.jpg',
+      'assets/photo6.jpg',
+      'assets/photo7.jpg',
+      'assets/photo8.jpg',
+      'assets/photo9.jpg'
+    ];
+
+    const messages = [
+      '还是觉得味道这饺子味道有点淡而且太少哈哈哈',
+      '去年12月份去in77吃的新白鹿，那天我们相谈甚欢',
+      '快记不清了，这应该是高二下开学的时候某次班会上的表彰吧。你小子真是雄姿英发啊',
+      '这张，应该是你高二生日的时候。我猜这是你最怀念的一个瞬间吧，换做是我我也会相当珍惜的，那个食堂的氛围真的……',
+      '高三运动会，我只看到四个手舞足蹈的机器人！同时也是看到我们团支书大人跑400米了',
+      '10月份十四校庆的时候，那时候感觉好久不见了，我记得那天我在康桥报告厅给你展示了一把我的干将嘿嘿（这张画质也是绝了，秦朝画质）',
+      '王者是我们之间的羁绊！以前只喜欢自己打，但是随着年龄的增大，发现和好友一起打才有意思',
+      '众所周知，102和104不分家，104的床还没睡够就已经半只脚踏进102了，104最后还是变成仓库了',
+      '参见朱然将军【抱拳】高中唯一一次春游'
+    ];
+
+    function changeImage() {
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      document.getElementById('birthdayImage').src = images[currentImageIndex];
+      document.getElementById('message').textContent = messages[currentImageIndex];
+    }
+  </script>
+
+</body>
+</html>
