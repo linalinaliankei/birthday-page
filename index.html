@@ -4,8 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>一个小网站</title>
-  <link href="https://fonts.loli.net/css2?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+
+  <!-- 使用本地字体 -->
   <style>
+    @font-face {
+      font-family: 'Noto Sans SC';
+      src: url('static/NotoSansSC-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     body {
       font-family: 'Noto Sans SC', sans-serif;
       margin: 0;
@@ -105,9 +113,9 @@
 </head>
 <body>
 
-  <!-- 开始界面，放置视频和说明文字 -->
+  <!-- 开始界面 -->
   <div class="start-screen" id="startScreen">
-    <h1>哈哈哈，被耍了吧，问卷在视频结尾的链接里，所以一定要看完这个哦！ </h1>
+    <h1>哈哈哈，被耍了吧，问卷在视频结尾的链接里，所以一定要看完这个哦！</h1>
     <p>你小子别给我快进，视频里面有惊喜，错过了就真的很可惜了！</p>
     <div class="media-container">
       <video id="introVideo" preload="auto" autoplay>
@@ -118,7 +126,7 @@
     <button class="start-button" onclick="startExperience()">GO GO GO!</button>
   </div>
 
-  <!-- 祝福内容 -->
+  <!-- 主体内容 -->
   <div class="container" id="mainContent" style="display: none;">
     <h1>今天是2024届6班团支书周佶劼同学的生日，让我们祝他生日快乐！！！</h1>
     <div class="media-container">
@@ -133,25 +141,20 @@
   </div>
 
   <script>
-    // 播放视频完毕后跳转
     const introVideo = document.getElementById('introVideo');
     const mainContent = document.getElementById('mainContent');
     const startScreen = document.getElementById('startScreen');
     const startButton = document.querySelector('.start-button');
     const bgm = document.getElementById('bgm');
 
-    // 控制视频播放
     function startExperience() {
       introVideo.play();
-      startButton.style.display = 'none'; // 隐藏按钮
+      startButton.style.display = 'none';
     }
 
     introVideo.onended = function () {
-      // 隐藏视频并显示祝福内容
       startScreen.style.display = 'none';
       mainContent.style.display = 'block';
-
-      // 播放背景音乐
       bgm.play().catch(() => {
         alert('浏览器限制了自动播放，请点击页面后重试 🎵');
       });
