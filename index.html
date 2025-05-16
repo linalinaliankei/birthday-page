@@ -109,6 +109,34 @@
       margin-top: 20px;
       display: block;
     }
+
+    .final-message-screen {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: black;
+      color: white;
+      padding: 30px;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    #typedMessage {
+      font-size: 24px;
+      line-height: 1.8;
+      max-width: 800px;
+      white-space: pre-wrap;
+      text-align: left;
+      border-right: 2px solid white;
+      padding: 20px;
+      animation: blink-caret 0.75s step-end infinite;
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: white; }
+    }
   </style>
 </head>
 <body>
@@ -138,6 +166,11 @@
       <source src="assets/happy_birthday.mp3" type="audio/mp3" />
       您的浏览器不支持音频元素。
     </audio>
+  </div>
+
+  <!-- 最后祝福界面 -->
+  <div class="final-message-screen" id="finalMessageScreen">
+    <div id="typedMessage"></div>
   </div>
 
   <script>
@@ -186,11 +219,56 @@
     ];
 
     function changeImage() {
-      currentImageIndex = (currentImageIndex + 1) % images.length;
-      document.getElementById('birthdayImage').src = images[currentImageIndex];
-      document.getElementById('message').textContent = messages[currentImageIndex];
+      currentImageIndex++;
+
+      if (currentImageIndex < images.length) {
+        document.getElementById('birthdayImage').src = images[currentImageIndex];
+        document.getElementById('message').textContent = messages[currentImageIndex];
+      } else if (currentImageIndex === images.length) {
+        document.getElementById('birthdayImage').src = images[images.length - 1];
+        document.getElementById('message').textContent = messages[messages.length - 1];
+
+        setTimeout(() => {
+          mainContent.style.display = 'none';
+          document.getElementById('finalMessageScreen').style.display = 'flex';
+          typeWriterEffect(finalText, 'typedMessage', 100);
+        }, 5000);
+      }
+    }
+
+    const finalText = `
+To 周佶劼：
+
+作为你的好朋友，我一直觉得你是一个充满正义感的人。你敢于为一切不公发声，也勇于针砭时弊。所以我始终相信，法学这个专业真的很适合你。司法的世界需要智慧，也更需要勇气。而你，兼而有之。
+
+愿你不惧风雨，在新的一岁里坚定前行。就像那句话所说：
+
+“少年就是少年，
+他们看春风不喜，看夏蝉不烦，
+看秋风不悲，看冬雪不叹；
+看满身富贵懒察觉，
+看不公不允敢面对，
+只因他们是少年。”
+
+愿你始终拥有这样的少年气，走出属于自己的道路。
+
+——— 你的好哥们 连凯
+`;
+
+    function typeWriterEffect(text, elementId, speed = 100) {
+      const element = document.getElementById(elementId);
+      let index = 0;
+
+      function type() {
+        if (index < text.length) {
+          element.textContent += text.charAt(index);
+          index++;
+          setTimeout(type, speed);
+        }
+      }
+
+      type();
     }
   </script>
-
 </body>
 </html>
